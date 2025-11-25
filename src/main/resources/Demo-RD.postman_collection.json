@@ -1,0 +1,306 @@
+{
+	"info": {
+		"_postman_id": "e9b35f84-68dd-4471-afbb-4133ea0e140d",
+		"name": "Demo RD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29814130"
+	},
+	"item": [
+		{
+			"name": "Tenant",
+			"item": [
+				{
+					"name": "Save Tenant",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rnc\": \"123456789\",\n    \"razonSocial\": \"TEST SRL\",\n    \"direccionFiscal\": \"test\",\n    \"alias\": \"alias test\",\n    \"nombreContacto\": \"Tu ps\",\n    \"telefonoContacto\": \"987654321\",\n    \"ambiente\": \"1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/tenant",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"tenant"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Tenant",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rnc\": \"123456789\",\n    \"razonSocial\": \"Test Razon social SRL\",\n    \"direccionFiscal\": \"Test direccion fiscal\",\n    \"alias\": \"Test Alias\",\n    \"nombreContacto\": \"Test nombre contacto\",\n    \"telefonoContacto\": \"987654322\",\n    \"ambiente\": \"1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/tenant/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"tenant",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Tenant by RNC",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/tenant/rnc/123456789",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"tenant",
+								"rnc",
+								"123456789"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Certificado Digital",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "archivo",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "contrasenia",
+									"value": "tu-password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/tenant/subir_certificado/123456789",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"tenant",
+								"subir_certificado",
+								"123456789"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Firmar Documento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "archivo",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/tenant/firmar_documento/123456789",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"tenant",
+								"firmar_documento",
+								"123456789"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Setup Directories",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v2/tenant/123456789/setup-directories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"tenant",
+								"123456789",
+								"setup-directories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Setup DataBase",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "            {\n                \"rnc\": \"123456789\",\n                \"host\": \"mariadb-bd\", // localhost -> 127.0.0.1 , docker -> mariadb-bd (tu db-container-name)\n                \"port\": \"3306\" // local -> tu puerto , docker -> 3306 (tu puerto de bd de tu service bd)\n            }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/tenant/setup-database",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"tenant",
+								"setup-database"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sesion",
+			"item": [
+				{
+					"name": "Create Sesion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rnc\": \"123456789\",\n    \"ambiente\": \"1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/sesion/crear",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"sesion",
+								"crear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Sesion Activa",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rnc\": \"123456789\",\n    \"ambiente\": \"1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v2/sesion/obtener_activa",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v2",
+								"sesion",
+								"obtener_activa"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

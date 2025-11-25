@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: webservice-rd-demo
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+springdoc:
+  api-docs:
+    path: /web-service-rd-demo/v3/api-docs
+  swagger-ui:
+    path: /docs
+
+swagger:
+  info:
+    title: Proyecto Web Service RD Demo
+    version: "2.0"
+    description: API que implementa la multitenencia y permite integrarse con servicios DGII (Entidad Tributaria de la República Dominicana).
+  contact:
+    name: Davis Coronado
+    email: daviscoronadoalbines@gmail.com
+
+logging:
+  level:
+    org.dcoronado.WebServiceDGIIRepublicaDominicana: DEBUG
+    org.springframework: INFO
+
+  file:
+    path: ${LOG_PATH}
+
+tenant:
+  filesystem:
+    basepath: ${FILESYSTEM_PATH}
