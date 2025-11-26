@@ -22,7 +22,7 @@ services:
     image: mariadb:10.11.6-jammy
     restart: always
     ports:
-      - "3307:3306"
+      - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=sasa
       - MYSQL_DATABASE=billing_rd_demo
