@@ -42,6 +42,14 @@ Puedes importar la colección de Postman para probar los endpoints:
 
 📁 **Archivo:** `src/main/resources/Demo-RD.postman_collection.json`
 
+## ⚠️ Importante: Certificados DGII
+
+Para probar los servicios de integración con la DGII se requiere un **certificado digital válido y autorizado** por un ente certificador reconocido por la DGII de República Dominicana.
+
+**Si no cuentas con un certificado:**
+- Los tests unitarios están diseñados para probar la funcionalidad **aislando las dependencias externas** (DGII).
+- Puedes ejecutar `mvn test` para validar la lógica de negocio sin necesidad de certificados reales.
+
 ## 📦 Requisitos para desarrollo local
 
 - **Java 17+**
