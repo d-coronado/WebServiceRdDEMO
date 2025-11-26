@@ -101,8 +101,11 @@ public class TenantController extends AbstractApi {
 
     @Operation(
             summary = "Configurar directorios",
-            description = "Crea las carpetas necesarias para guardar archivos (xml, .p12, etc) para un tenant. " +
-                    "Al crear verás el árbol de directorios creado para ese tenant en la ruta base que definiste en application.yml"
+            description = "Crea las carpetas necesarias para guardar archivos (XML, certificados .p12, etc.) "
+                    + "para un tenant. Al ejecutar este proceso, podrás ver el árbol de directorios creado en la "
+                    + "ruta base configurada en application.yml. "
+                    + "Si la aplicación se está ejecutando en Docker, puedes verificar el árbol de directorios "
+                    + "directamente en los volúmenes montados del contenedor."
     )
     @PostMapping("/{rnc}/setup-directories")
     public ResponseEntity<CustomResponse> setupDirectories(@PathVariable String rnc) {
@@ -112,11 +115,13 @@ public class TenantController extends AbstractApi {
 
     @Operation(
             summary = "Subir certificado digital",
-            description = "Permite guardar certificado digital (.p12) para poder firmar documentos, " +
-                    "puedes crear cualquier archivo .p12 para pruebas, al crear se guardará en el " +
-                    "directorio del tenant configurado con tu ruta base definida en application.yml. " +
-                    "Los datos sensibles del certificado (ruta, contraseña) se guardan en la BD principal " +
-                    "para luego poder leer y usar el certificado"
+            description = "Permite guardar el certificado digital (.p12) necesario para firmar documentos. "
+                    + "Puedes usar cualquier archivo .p12 para pruebas. Al subirlo, el certificado se almacena "
+                    + "en el directorio del tenant según la ruta base definida en application.yml. "
+                    + "Los datos sensibles del certificado (ruta y contraseña) se registran en la base de datos "
+                    + "principal para su posterior uso. "
+                    + "Si la aplicación se ejecuta en Docker, puedes verificar el archivo cargado dentro de los "
+                    + "volúmenes montados del contenedor."
     )
     @PostMapping(value = "/subir_certificado/{rnc}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CustomResponse> uploadCertificadoDigital(

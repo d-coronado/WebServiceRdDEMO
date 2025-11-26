@@ -36,7 +36,16 @@ public class SesionController extends AbstractApi {
     private final SesionDtoTransformer sesionTransformer;
     private final SesionMapperCommand sesionMapperCommand;
 
-    @Operation(summary = "Crear sesion", description = "Crea una nueva sesión con datos de el tenant para poder obtener un token y consumir los servicios de DGII")
+    @Operation(
+            summary = "Crear sesión",
+            description = "Crea una nueva sesión utilizando los datos del tenant para obtener el token oficial "
+                    + "proporcionado por la DGII. Este token es necesario para consumir los servicios de la DGII "
+                    + "en el ambiente indicado y permite ejecutar consumir otros servicios habilitados por la DGII. "
+                    + "Para probar este endpoint en condiciones reales (success), se requiere un certificado digital "
+                    + "auténtico emitido por una entidad. Para fines de desarrollo, se implementaron pruebas unitarias "
+                    + "que aíslan las dependencias externas y permiten validar la lógica de negocio sin necesidad "
+                    + "de un certificado real ni conexión al servicio externo."
+    )
     @PostMapping("/crear")
     public ResponseEntity<CustomResponse> crearSesion(@Valid @RequestBody CreateSesionRequestDto sesionRequestDto) throws Exception {
         CreateSesionCommand command = sesionMapperCommand.toCommand(sesionRequestDto);
