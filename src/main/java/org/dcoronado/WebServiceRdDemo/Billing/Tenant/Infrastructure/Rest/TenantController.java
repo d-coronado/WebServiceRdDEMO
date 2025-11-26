@@ -13,6 +13,7 @@ import org.dcoronado.WebServiceRdDemo.Billing.Tenant.Infrastructure.Rest.Dto.Req
 import org.dcoronado.WebServiceRdDemo.Billing.Tenant.Infrastructure.Rest.Dto.Response.TenantResponseDto;
 import org.dcoronado.WebServiceRdDemo.Shared.Infraestructure.Api.AbstractApi;
 import org.dcoronado.WebServiceRdDemo.Shared.Domain.Response.CustomResponse;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -81,7 +82,15 @@ public class TenantController extends AbstractApi {
     /**
      * Setup de base de datos (solo una vez)
      */
-    @Operation(summary = "Configurar base de datos", description = "Crea la base de datos para un nuevo tenant, debe ejecutarse solo una vez por tenant")
+    @Operation(
+            summary = "Configurar base de datos",
+            description = "Crea la base de datos para un nuevo tenant; debe ejecutarse solo una vez por tenant. " +
+                    "Al crear, verifica en tu gestor de BD que se generó la nueva base de datos para el tenant, " +
+                    "el usuario de BD con permisos asignados, y que en la BD principal quedaron registrados los " +
+                    "datos sensibles de conexión del tenant. " +
+                    "Importante: en ambiente local usar host '127.0.0.1'; en Docker usar el nombre del servicio " +
+                    "definido en el docker-compose (para este proyecto: 'mariadb-bd') y el puerto 3306."
+    )
     @PostMapping("/setup-database")
     public ResponseEntity<CustomResponse> setupDatabase(@Valid @RequestBody TenantSetupBDRequestDto request) {
         SetupBDTenantCommand command = tenantMapperCommand.toCommand(request);
@@ -90,15 +99,26 @@ public class TenantController extends AbstractApi {
     }
 
 
-    @Operation(summary = "Configurar directorios", description = "Crea las carpetas necesarias para guardar archivos(xml,.p12,etc) para un tenant")
+    @Operation(
+            summary = "Configurar directorios",
+            description = "Crea las carpetas necesarias para guardar archivos (xml, .p12, etc) para un tenant. " +
+                    "Al crear verás el árbol de directorios creado para ese tenant en la ruta base que definiste en application.yml"
+    )
     @PostMapping("/{rnc}/setup-directories")
     public ResponseEntity<CustomResponse> setupDirectories(@PathVariable String rnc) {
         setupDirectoriesTenantUseCase.execute(rnc);
         return success("Setup directories creado correctamente");
     }
 
-    @Operation(summary = "Subir certificado digital", description = "Permite guardar certificado digital (.p12) para poder firmar documentos")
-    @PostMapping("/subir_certificado/{rnc}")
+    @Operation(
+            summary = "Subir certificado digital",
+            description = "Permite guardar certificado digital (.p12) para poder firmar documentos, " +
+                    "puedes crear cualquier archivo .p12 para pruebas, al crear se guardará en el " +
+                    "directorio del tenant configurado con tu ruta base definida en application.yml. " +
+                    "Los datos sensibles del certificado (ruta, contraseña) se guardan en la BD principal " +
+                    "para luego poder leer y usar el certificado"
+    )
+    @PostMapping(value = "/subir_certificado/{rnc}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CustomResponse> uploadCertificadoDigital(
             @PathVariable("rnc") final String rnc, @RequestParam("archivo") final MultipartFile archivo,
             @RequestParam("contrasenia") final String contrasenia
@@ -110,8 +130,12 @@ public class TenantController extends AbstractApi {
         return success("Certificado cargado correctamente para el tenant con RNC: " + rnc);
     }
 
-    @Operation(summary = "Firmar documento XML", description = "Firma digitalmente un documento usando el certificado de el tenant")
-    @PostMapping("firmar_documento/{rnc}")
+    @Operation(
+            summary = "Firmar documento XML",
+            description = "Firma digitalmente un documento usando el certificado del tenant, " +
+                    "necesitas subir un certificado digital VALIDO, sino ejecutar test para pruebas"
+    )
+    @PostMapping(value = "firmar_documento/{rnc}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CustomResponse> signDocument(@PathVariable("rnc") final String rnc,
                                                        @RequestParam("archivo") final MultipartFile archivo) throws Exception {
         final String nombreArchvio = archivo.getOriginalFilename();
@@ -119,7 +143,7 @@ public class TenantController extends AbstractApi {
         FirmarDocumentoByTenantCommand command = tenantMapperCommand.toCommand(rnc, nombreArchvio, contenido);
         String documentFirmado = firmarDocumentByTenantUseCase.firmarDocumentByTenant(command);
         String documentoBase64 = Base64.getEncoder().encodeToString(documentFirmado.getBytes(StandardCharsets.UTF_8));
-        return success(documentoBase64,"Documento Firmado Exitosamente");
+        return success(documentoBase64, "Documento Firmado Exitosamente");
     }
 
 }
