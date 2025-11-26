@@ -1,6 +1,6 @@
 # WebServiceRdDEMO
 
-Proyecto Java con Spring Boot y Maven que implementa servicios web para interactuar con la DGII (República Dominicana).
+Proyecto Java con Spring Boot y Maven que implementa servicios web para interactuar con la DGII (Ente tributario de República Dominicana).
 
 ## 📋 Descripción
 
