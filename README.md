@@ -50,6 +50,11 @@ Para probar los servicios de integración con la DGII se requiere un **certifica
 - Los tests unitarios están diseñados para probar la funcionalidad **aislando las dependencias externas** (DGII).
 - Puedes ejecutar `mvn test` para validar la lógica de negocio sin necesidad de certificados reales.
 
+### Servicios que requieren certificado válido:
+- **`FirmarDocumentByTenantUseCase`**: Firma digital de documentos XML
+- **`CreateSesionUseCase`**: Creación y validación de sesiones con DGII, para firmar se necesita el certificado valido
+- **`UploadCertificadoByTenantUseCase`**: Puedes simular la carga usando cualquier archivo con extensión `.p12` (no necesita ser un certificado válido para testing)
+
 ## 📦 Requisitos para desarrollo local
 
 - **Java 17+**
